@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Locale;
 import org.bukkit.command.ConsoleCommandSender;
 
 import static io.FileUtils.FILE_SEPARATOR;
@@ -148,35 +149,26 @@ public class BackupTask implements Runnable, PropertyConstants {
     }
 
     /**
-     * @return String representing the current Date in the format
-     * <br> DAY MONTH YEAR-HOUR MINUTE SECOND
+     * @return String representing the current Date in configured format
      */
     private String getDate() {
-        StringBuilder sBuilder = new StringBuilder();
         Calendar cal = Calendar.getInstance();
-        sBuilder.append(cal.get(Calendar.DAY_OF_MONTH));
+        
+        String formattedDate = new String();
+        String dateFormat = "test"; // TODO: Connect to properties
 
-        int month = cal.get(Calendar.MONTH) + 1;
-        if (month < 10)
-            sBuilder.append("0");
-        sBuilder.append(month);
+        String day = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
+        String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
+        String year = String.valueOf(cal.get(Calendar.YEAR));
 
-        sBuilder.append(cal.get(Calendar.YEAR));
-        sBuilder.append("-");
+        String hour = String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
+        String minute = String.valueOf(cal.get(Calendar.MINUTE));
+        String second = String.valueOf(cal.get(Calendar.SECOND));
 
-        int hours = cal.get(Calendar.HOUR_OF_DAY);
-        if (hours < 10)
-            sBuilder.append("0");
-        sBuilder.append(hours);
-        int minutes = cal.get(Calendar.MINUTE);
-        if (minutes < 10)
-            sBuilder.append("0");
-        sBuilder.append(minutes);
-        int seconds = cal.get(Calendar.SECOND);
-        if (seconds < 10)
-            sBuilder.append("0");
-        sBuilder.append(seconds);
-        return sBuilder.toString();
+        // Format string http://download.oracle.com/javase/1.5.0/docs/api/java/util/Formatter.html#syntax
+        formattedDate = String.format(dateFormat, day, month, year, hour, minute, second);
+        
+        return formattedDate;
     }
 
     /**
