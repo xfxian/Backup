@@ -37,7 +37,7 @@ public class PropertiesSystem implements PropertyConstants{
 
     private final int BOOL_VALUES_SIZE       = 3;
 
-    private final int STRING_VALUES_SIZE     = 3;
+    private final int STRING_VALUES_SIZE     = 4;
 
     /** Stores every int property*/
     private int[] intValues = new int[INT_VALUES_SIZE];
@@ -131,6 +131,8 @@ public class PropertiesSystem implements PropertyConstants{
                     stringValues[STRING_NO_BACKUP_WORLDNAMES] = line.substring(17);
                 else if (line.startsWith("ZIPBackup"))
                     boolValues[BOOL_ZIP] = Boolean.parseBoolean(line.substring(10));
+                else if (line.startsWith("CustomDateFormat"))
+                    stringValues[STRING_CUSTOM_DATE_FORMAT] = line.substring(17);
             }
         }
         catch(Exception e) {

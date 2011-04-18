@@ -153,21 +153,28 @@ public class BackupTask implements Runnable, PropertyConstants {
      */
     private String getDate() {
         Calendar cal = Calendar.getInstance();
-        
+
         String formattedDate = new String();
-        String dateFormat = "test"; // TODO: Connect to properties
+        String customDateFormat = pSystem.getStringProperty(STRING_CUSTOM_DATE_FORMAT);
+        String defaultDateFormat = "%1$td%1$tm%1$tY-%1$tH%1$tM%1$tS";
 
-        String day = String.valueOf(cal.get(Calendar.DAY_OF_MONTH));
-        String month = String.valueOf(cal.get(Calendar.MONTH) + 1);
-        String year = String.valueOf(cal.get(Calendar.YEAR));
+        // Java string (and date) formatting:
+        // http://download.oracle.com/javase/1.5.0/docs/api/java/util/Formatter.html#syntax
 
-        String hour = String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
-        String minute = String.valueOf(cal.get(Calendar.MINUTE));
-        String second = String.valueOf(cal.get(Calendar.SECOND));
+        if (customDateFormat.isEmpty()) {
+            formattedDate = String.format(defaultDateFormat, cal);
+        }
+        else {
+            try {
+                formattedDate = String.format(customDateFormat, cal);
+            }
+            catch (Exception e) {
+                System.out.println("[BACKUP] Error formatting date, bad format string! Formatting date with default format string...");
 
-        // Format string http://download.oracle.com/javase/1.5.0/docs/api/java/util/Formatter.html#syntax
-        formattedDate = String.format(dateFormat, day, month, year, hour, minute, second);
-        
+                formattedDate = String.format(defaultDateFormat, cal);
+            }
+        }
+
         return formattedDate;
     }
 
